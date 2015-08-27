@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+require('../src/config')();
+
+var app = require('../src/app');
+var nconf = require('nconf');
+var http = require('http');
+
+var port = nconf.get('port');
+if (!port) {
+    console.log('port missing from configuration');
+    process.exit(1);
+}
+
+app.set('port', port);
+var server = http.createServer(app);
+
+server.listen(port);
+server.on('listening', function () {
+    console.log('listening on port ' + server.address().port);
+});
+
+

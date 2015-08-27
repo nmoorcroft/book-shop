@@ -1,0 +1,5 @@
+mongodb: mongodb://localhost/book-shop-test
+base_uri: /api
+
+
+

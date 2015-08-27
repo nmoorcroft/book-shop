@@ -1,0 +1,29 @@
+{
+  "name": "book-shop",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "bin/www --conf=config.yml",
+    "test": "istanbul cover ./node_modules/.bin/_mocha -- test/ -R spec"
+  },
+  "author": "neil.moorcroft@zuhlke.com",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "~1.12.4",
+    "express": "~4.12.4",
+    "express-jsonschema": "^1.0.2",
+    "js-yaml": "^3.3.1",
+    "lodash": "^3.9.3",
+    "mongodb": "^1.4.38",
+    "mongoose": "^4.0.5",
+    "nconf": "^0.7.1",
+    "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "istanbul": "^0.3.14",
+    "mocha": "^2.2.5",
+    "sinon": "^1.14.1",
+    "supertest": "^1.0.1"
+  }
+}
