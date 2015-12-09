@@ -17,12 +17,13 @@
     "mongodb": "^1.4.38",
     "mongoose": "^4.0.5",
     "nconf": "^0.7.1",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "jsonwebtoken": "^5.4.1"
   },
   "devDependencies": {
     "chai": "^3.0.0",
     "istanbul": "^0.3.14",
-    "mocha": "^2.2.5",
+    "mocha": "^2.3.4",
     "sinon": "^1.14.1",
     "supertest": "^1.0.1"
   }

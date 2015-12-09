@@ -1,5 +1,6 @@
 mongodb: mongodb://localhost/book-shop-test
 base_uri: /api
-
+token_secret: TEST_SECRET
+users: ./test/helpers/test_users.json
 
 

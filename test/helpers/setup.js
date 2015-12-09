@@ -4,7 +4,7 @@ var nconf = require('nconf');
 var yaml = require('js-yaml');
 
 nconf.file({
-    file: 'config.yml',
+    file: './test/helpers/config.yml',
     format: {
         parse: yaml.safeLoad,
         stringify: yaml.safeDump
