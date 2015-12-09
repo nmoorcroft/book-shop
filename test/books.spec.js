@@ -12,7 +12,7 @@ describe('books api', function () {
     beforeEach(function () {
         app = require('./helpers/setup');
         db = require('../src/model');
-        token = require('./helpers/token')();
+        token = require('./helpers/tokenHelper')();
     });
 
     it('should retrieve all books from the book shop', function (done) {

@@ -1,17 +1,12 @@
 'use strict';
 
-var Q = require('q');
-var _ = require('lodash');
 var request = require('supertest');
-var nconf = require('nconf');
-var assert = require('chai').assert;
 
 describe('auth', function () {
 
     var app;
 
     beforeEach(function () {
-        nconf.overrides({disable_auth: false});
         app = require('./helpers/setup');
     });
 
@@ -32,7 +27,7 @@ describe('auth', function () {
 
     it('should require valid token', function (done) {
         request(app).get('/api/books')
-            .set('x-access-token', require('./helpers/token')())
+            .set('x-access-token', require('./helpers/tokenHelper')())
             .expect(200)
             .end(done);
 

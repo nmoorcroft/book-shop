@@ -1,9 +1,8 @@
 'use strict';
 
-var Q = require('q');
 var _ = require('lodash');
-var jwt = require('jsonwebtoken');
 var request = require('supertest');
+var jwt = require('jsonwebtoken');
 var nconf = require('nconf');
 var assert = require('chai').assert;
 

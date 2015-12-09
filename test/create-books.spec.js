@@ -1,7 +1,5 @@
 'use strict';
 
-var Q = require('q');
-var _ = require('lodash');
 var request = require('supertest');
 var assert = require('chai').assert;
 
@@ -12,7 +10,7 @@ describe('create-books api', function () {
     beforeEach(function () {
         app = require('./helpers/setup');
         db = require('../src/model');
-        token = require('./helpers/token')();
+        token = require('./helpers/tokenHelper')();
     });
 
     it('should add a new book to the library', function (done) {
