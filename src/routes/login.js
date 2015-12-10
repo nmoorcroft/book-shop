@@ -9,17 +9,22 @@ var router = express.Router();
 
 var users = JSON.parse(fs.readFileSync(nconf.get('users')));
 
-router.get('/login', function (req, res) {
-    var username = req.query.username;
-    if (!users[username] || users[username] != req.query.password) {
+router.post('/login', function (req, res) {
+
+    var credentials = req.body;
+    var user = users[credentials.username];
+
+    if (!user || user.password != credentials.password) {
         res.status(401).send('invalid username or password');
 
     } else {
-        jwt.sign({'username': username}, nconf.get('token_secret'), { expiresIn: 86400 }, function(token) {
+        var payload = {username: credentials.username, role: user.role};
+        jwt.sign(payload, nconf.get('token_secret'), {expiresIn: '2 days'}, function (token) {
             res.status(200).send({token: token});
         });
-        
+
     }
+
 });
 
 module.exports = router;

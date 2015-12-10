@@ -15,21 +15,30 @@ describe('login api', function () {
     });
 
     it('should be unathorized for invalid username', function (done) {
-        request(app).get('/api/login?username=invalid&password=password')
+        var credentials = { username: "invalid", password: "password" };
+        request(app).post('/api/login')
+            .set('Content-Type', 'application/json')
+            .send(credentials)
             .expect(401)
             .end(done);
 
     });
 
     it('should be unathorized for invalid password', function (done) {
-        request(app).get('/api/login?username=admin&password=invalid')
+        var credentials = { username: "admin", password: "invalid" };
+        request(app).post('/api/login')
+            .set('Content-Type', 'application/json')
+            .send(credentials)
             .expect(401)
             .end(done);
 
     });
 
-    it('should be unathorized for missing params', function (done) {
-        request(app).get('/api/login')
+    it('should be unathorized for invalid payload', function (done) {
+        var credentials = { };
+        request(app).post('/api/login')
+            .set('Content-Type', 'application/json')
+            .send(credentials)
             .expect(401)
             .end(done);
 
@@ -37,13 +46,18 @@ describe('login api', function () {
 
 
     it('should return a valid json web token for valid username & password', function (done) {
-        request(app).get('/api/login?username=admin&password=password')
+        var credentials = { username: 'admin', password: 'password' };
+        request(app).post('/api/login')
+            .set('Content-Type', 'application/json')
+            .send(credentials)
             .expect(200)
             .end(function (err, res) {
                 if (err) done(err);
                 assert.ok(_(res.body).has('token'));
                 var token = res.body.token;
                 jwt.verify(token, nconf.get('token_secret'), function(err, decoded) {
+                    assert.equal(decoded.username, 'admin');
+                    assert.equal(decoded.role, 'superuser');
                     done(err);
                 });
             });
@@ -51,7 +65,10 @@ describe('login api', function () {
     });
 
     it('should only verify jwt with same token_secret', function (done) {
-        request(app).get('/api/login?username=admin&password=password')
+        var credentials = { username: "admin", password: "password" };
+        request(app).post('/api/login')
+            .set('Content-Type', 'application/json')
+            .send(credentials)
             .expect(200)
             .end(function (err, res) {
                 if (err) done(err);

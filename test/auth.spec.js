@@ -19,15 +19,15 @@ describe('auth', function () {
 
     it('should fail with invalid token', function (done) {
         request(app).get('/api/books')
-            .set('x-access-token', 'invalid')
+            .set('Authorization', 'Bearer invalid')
             .expect(401)
             .end(done);
 
     });
 
-    it('should require valid token', function (done) {
+    it('should response 200 for valid token', function (done) {
         request(app).get('/api/books')
-            .set('x-access-token', require('./helpers/tokenHelper')())
+            .set('Authorization', require('./helpers/authzHelper')())
             .expect(200)
             .end(done);
 

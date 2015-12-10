@@ -1,7 +1,7 @@
 port: 3000
 mongodb: mongodb://localhost/ucc-2015-camp-test
 base_uri: /api
-token_secret: DJFDHF7JDHD73J2DAPPQOLBBZD
+token_secret: kD[%97}9(f@D#bfB
 users: users.json
 
 

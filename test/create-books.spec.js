@@ -5,12 +5,12 @@ var assert = require('chai').assert;
 
 describe('create-books api', function () {
 
-    var app, db, token;
+    var app, db, authz;
 
     beforeEach(function () {
         app = require('./helpers/setup');
         db = require('../src/model');
-        token = require('./helpers/tokenHelper')();
+        authz = require('./helpers/authzHelper')();
     });
 
     it('should add a new book to the library', function (done) {
@@ -22,7 +22,7 @@ describe('create-books api', function () {
 
         removeBooks().then(function() {
             request(app).post('/api/books')
-                .set('x-access-token', token)
+                .set('Authorization', authz)
                 .set('Content-Type', 'application/json')
                 .send(new_book)
                 .expect(201)
@@ -44,7 +44,7 @@ describe('create-books api', function () {
     it('should return 400 for invalid post', function (done) {
         var book = {};
         request(app).post('/api/books')
-            .set('x-access-token', token)
+            .set('Authorization', authz)
             .set('Content-Type', 'application/json')
             .send(book)
             .expect(400)

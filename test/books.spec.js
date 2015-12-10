@@ -7,18 +7,18 @@ var assert = require('chai').assert;
 
 describe('books api', function () {
 
-    var app, db, token;
+    var app, db, authz;
 
     beforeEach(function () {
         app = require('./helpers/setup');
         db = require('../src/model');
-        token = require('./helpers/tokenHelper')();
+        authz = require('./helpers/authzHelper')();
     });
 
     it('should retrieve all books from the book shop', function (done) {
         createSampleBooks().then(function () {
             request(app).get('/api/books')
-                .set('x-access-token', token)
+                .set('Authorization', authz)
                 .expect(200)
                 .expect(function (res) {
                     assert.equal(res.body.length, 2);
@@ -36,7 +36,7 @@ describe('books api', function () {
 
         }).then(function(books) {
             request(app).get('/api/books/' + books[0]._id)
-                .set('x-access-token', token)
+                .set('Authorization', authz)
                 .expect(200)
                 .expect(function (res) {
                     assert.ok(_(res.body).has('_links'));
@@ -52,7 +52,7 @@ describe('books api', function () {
 
     it('should get 404 for invalid id', function (done) {
         request(app).get('/api/books/123')
-            .set('x-access-token', token)
+            .set('Authorization', authz)
             .expect(404)
             .end(done);
 
@@ -60,7 +60,7 @@ describe('books api', function () {
 
     it('should get 404 for unknown id', function (done) {
         request(app).get('/api/books/5536958388a60d701386ffbc')
-            .set('x-access-token', token)
+            .set('Authorization', authz)
             .expect(404)
             .end(done);
 
