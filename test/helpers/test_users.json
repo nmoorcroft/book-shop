@@ -1,4 +1,11 @@
 {
-  "admin" : { "password" : "password", "role" : "superuser" },
-  "bob" : { "password" : "password", "role" : "user" }
+  "admin": {
+    "password": "$2a$10$xrgBMhqAlnL7k6ihZv.ETOUxLPQ91gKYAEJTv9xXv2KrASXTSJ9Di",
+    "role": "superuser"
+  },
+  "bob": {
+    "password": "$2a$10$5tBinl2oLZmkDYZpbPF7YeMFio3CWURrQqKDqfa4XIFYoNEE3mxty",
+    "role": "user"
+  }
 }
+

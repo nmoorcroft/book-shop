@@ -9,6 +9,7 @@
   "author": "neil.moorcroft@zuhlke.com",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^0.8.5",
     "body-parser": "~1.12.4",
     "express": "~4.12.4",
     "express-jsonschema": "^1.0.2",
