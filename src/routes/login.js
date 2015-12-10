@@ -6,7 +6,6 @@ var jwt = require('jsonwebtoken');
 var fs = require('fs');
 var bcrypt = require('bcrypt');
 var nconf = require('nconf');
-var bcrypt = require('bcrypt');
 var router = express.Router();
 
 var users = JSON.parse(fs.readFileSync(nconf.get('users')));
