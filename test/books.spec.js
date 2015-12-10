@@ -7,18 +7,17 @@ var assert = require('chai').assert;
 
 describe('books api', function () {
 
-    var app, db, authz;
+    var app, db, helper;
 
     beforeEach(function () {
         app = require('./helpers/setup');
         db = require('../src/model');
-        authz = require('./helpers/authzHelper')();
+        helper = require('./helpers/db-helper')(db);
     });
 
     it('should retrieve all books from the book shop', function (done) {
-        createSampleBooks().then(function () {
+        helper.createSampleBooks().then(function () {
             request(app).get('/api/books')
-                .set('Authorization', authz)
                 .expect(200)
                 .expect(function (res) {
                     assert.equal(res.body.length, 2);
@@ -31,12 +30,11 @@ describe('books api', function () {
     });
 
     it('should retrieve a book by id', function (done) {
-        createSampleBooks().then(function () {
+        helper.createSampleBooks().then(function () {
             return db.Book.find({});
 
         }).then(function(books) {
             request(app).get('/api/books/' + books[0]._id)
-                .set('Authorization', authz)
                 .expect(200)
                 .expect(function (res) {
                     assert.ok(_(res.body).has('_links'));
@@ -52,7 +50,6 @@ describe('books api', function () {
 
     it('should get 404 for invalid id', function (done) {
         request(app).get('/api/books/123')
-            .set('Authorization', authz)
             .expect(404)
             .end(done);
 
@@ -60,26 +57,10 @@ describe('books api', function () {
 
     it('should get 404 for unknown id', function (done) {
         request(app).get('/api/books/5536958388a60d701386ffbc')
-            .set('Authorization', authz)
             .expect(404)
             .end(done);
 
     });
-
-    function createSampleBooks() {
-        return removeBooks().then(Q.all([
-            createBook('Domain-Driven Design', 'Eric Evans', 3600),
-            createBook('Test-Driven Development', 'Kent Beck', 2999)
-        ]));
-    }
-
-    function removeBooks() {
-        return db.Book.remove();
-    }
-
-    function createBook(title, author, price) {
-        return new db.Book({title: title, author: author, price: price}).save();
-    }
 
 
 });

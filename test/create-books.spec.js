@@ -2,27 +2,29 @@
 
 var request = require('supertest');
 var assert = require('chai').assert;
+var authz = require('./helpers/authz');
 
 describe('create-books api', function () {
 
-    var app, db, authz;
+    var app, db, helper;
 
     beforeEach(function () {
         app = require('./helpers/setup');
         db = require('../src/model');
-        authz = require('./helpers/authzHelper')();
+        helper = require('./helpers/db-helper')(db);
     });
 
     it('should add a new book to the library', function (done) {
         var new_book = {
             title: 'Refactoring: Improving the Design of Existing Code',
             price: 2999,
-            author: 'Martin Fowler'
+            author: 'Martin Fowler',
+            qty: 5
         };
 
-        removeBooks().then(function() {
+        helper.removeBooks().then(function() {
             request(app).post('/api/books')
-                .set('Authorization', authz)
+                .set('Authorization', authz.header('admin', 'superuser'))
                 .set('Content-Type', 'application/json')
                 .send(new_book)
                 .expect(201)
@@ -44,7 +46,7 @@ describe('create-books api', function () {
     it('should return 400 for invalid post', function (done) {
         var book = {};
         request(app).post('/api/books')
-            .set('Authorization', authz)
+            .set('Authorization', authz.header('admin', 'superuser'))
             .set('Content-Type', 'application/json')
             .send(book)
             .expect(400)
@@ -52,9 +54,27 @@ describe('create-books api', function () {
 
     });
 
-    function removeBooks() {
-        return db.Book.remove();
-    }
+    it('should be superuser to create books', function (done) {
+        var book = {};
+        request(app).post('/api/books')
+            .set('Authorization', authz.header('bob', 'user'))
+            .set('Content-Type', 'application/json')
+            .send(book)
+            .expect(401)
+            .end(done);
+
+    });
+
+    it('should be logged in to create books', function (done) {
+        var book = {};
+        request(app).post('/api/books')
+            .set('Content-Type', 'application/json')
+            .send(book)
+            .expect(401)
+            .end(done);
+
+    });
+
 
 
 });
