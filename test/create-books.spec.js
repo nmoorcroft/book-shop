@@ -75,6 +75,17 @@ describe('create-books api', function () {
 
     });
 
+    it('should fail authentication for invalid token', function (done) {
+        var book = {};
+        request(app).post('/api/books')
+            .set('Content-Type', 'application/json')
+            .set('Authorization', 'invalid')
+            .send(book)
+            .expect(401)
+            .end(done);
+
+    });
+
 
 
 });
